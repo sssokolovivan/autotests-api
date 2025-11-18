@@ -14,7 +14,7 @@ create_user_response_data = create_user_response.json()
 # print(create_user_response_data)
 user_id = create_user_response.json()['user']['id']
 
-
+ 
 login_payload = {
     "email": create_user_payload['email'],
     "password": create_user_payload['password']
