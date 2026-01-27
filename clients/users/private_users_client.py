@@ -2,6 +2,17 @@ from typing import TypedDict
 import httpx
 
 from clients.api_client import APIClient
+from clients.private_http_builder import AuthenticationUserDict, get_private_http_client
+
+class User(TypedDict):
+    """
+    Описание структуры пользователя.
+    """
+    id: str
+    email: str
+    lastName: str
+    firstName: str
+    middleName: str
 
 class UpdateUserRequestDict(TypedDict):
     """
@@ -12,6 +23,11 @@ class UpdateUserRequestDict(TypedDict):
     firstName: str | None
     middleName: str | None
 
+class GetUserResponseDict(TypedDict):
+    """
+    Описание структуры ответа создания пользователя.
+    """
+    user: User
 
 class PrivateUsersClient(APIClient):
     """
@@ -26,7 +42,7 @@ class PrivateUsersClient(APIClient):
         """
         return self.get("/api/v1/users/me")
         
-    def get_user_id_api(self, user_id: str) -> httpx.Response:
+    def get_user_api(self, user_id: str) -> httpx.Response:
         """
         Метод получения пользователя по идентификатору.
 
@@ -35,7 +51,7 @@ class PrivateUsersClient(APIClient):
         """
         return self.get(f'/api/v1/users/{user_id}')
 
-    def update_user_id_api(self, user_id: str, request: UpdateUserRequestDict) -> httpx.Response:
+    def update_user_api(self, user_id: str, request: UpdateUserRequestDict) -> httpx.Response:
         """
         Метод обновления пользователя по идентификатору.
 
@@ -45,7 +61,7 @@ class PrivateUsersClient(APIClient):
         """
         return self.patch(f"/api/v1/users/{user_id}", json=request)
 
-    def delete_user_id_api(self, user_id: str) -> httpx.Response:
+    def delete_user_api(self, user_id: str) -> httpx.Response:
         """
         Метод удаления пользователя по идентификатору.
 
@@ -53,3 +69,15 @@ class PrivateUsersClient(APIClient):
         :return: Ответ от сервера в виде объекта httpx.Response
         """
         return self.delete(f'/api/v1/users/{user_id}')
+
+    def get_user(self, user_id: str) -> GetUserResponseDict:
+        response = self.get_user_api(user_id)  
+        return response.json()
+
+def get_private_users_client(user: AuthenticationUserDict) -> PrivateUsersClient:
+    """
+    Функция создаёт экземпляр PrivateUsersClient с уже настроенным HTTP-клиентом.
+
+    :return: Готовый к использованию PrivateUsersClient.
+    """
+    return PrivateUsersClient(client=get_private_http_client(user))
