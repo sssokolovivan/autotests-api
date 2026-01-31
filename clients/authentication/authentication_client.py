@@ -6,11 +6,17 @@ from httpx_client import response
 
 
 class Token(TypedDict):
+    """
+    Описание структуры токенов
+    """
     tokenType: str
     accessToken: str
     refreshToken: str
 
 class LoginRequestDict(TypedDict):
+    """
+    Описание структуры логина
+    """
     email: str
     password: str
 
