@@ -1,13 +1,17 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class ExerciseSchema(BaseModel):
     """
     Описание структуры задания.
     """
+    model_config = ConfigDict(
+        populate_by_name=True
+    )
+
     id: str
     title: str
-    courseId: str = Field(alias="courseId")
+    course_id: str = Field(alias="courseId")
     max_score: int = Field(alias="maxScore")
     min_score: int = Field(alias="minScore")
     order_index: int = Field(alias="orderIndex")
@@ -17,7 +21,7 @@ class ExerciseSchema(BaseModel):
 
 class GetExerciseResponseSchema(BaseModel):
     """
-    Описание структуры ответа на получение задания..
+    Описание структуры ответа на получение задания.
     """
     exercise: ExerciseSchema
 
@@ -26,6 +30,10 @@ class GetExercisesQuerySchema(BaseModel):
     """
     Описание структуры запроса на получение списка заданий.
     """
+    model_config = ConfigDict(
+        populate_by_name=True
+    )
+
     courseId: str = Field(alias="courseId")
 
 
@@ -40,6 +48,10 @@ class CreateExerciseRequestSchema(BaseModel):
     """
     Описание структуры запроса на создание задания.
     """
+    model_config = ConfigDict(
+        populate_by_name=True
+    )
+
     title: str
     courseId: str = Field(alias="courseId")
     max_score: int = Field(alias="maxScore")
@@ -60,6 +72,10 @@ class UpdateExerciseRequestSchema(BaseModel):
     """
     Описание структуры запроса на обновление задания.
     """
+    model_config = ConfigDict(
+        populate_by_name=True
+    )
+
     title: str | None
     max_score: int | None = Field(alias="maxScore")
     min_score: int | None = Field(alias="minScore")
