@@ -27,7 +27,7 @@ class ValidationErrorResponseSchema(BaseModel):
 
 class InternalErrorResponseSchema(BaseModel):
     """
-    яМодель для описания внутренней ошибки.
+    Модель для описания внутренней ошибки.
     """
     model_config = ConfigDict(populate_by_name=True)
 
