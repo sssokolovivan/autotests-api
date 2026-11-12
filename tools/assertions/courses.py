@@ -64,10 +64,10 @@ def assert_create_course_response(
         response: CreateCourseResponseSchema
 ):
     """
-    Проверяет, что ответ на обновление курса соответствует данным из запроса.
+    Проверяет, что ответ на создание курса соответствует запросу.
 
-    :param request: Исходный запрос на обновление курса.
-    :param response: Ответ API с обновленными данными курса.
+    :param request: Исходный запрос на создание курса.
+    :param response: Ответ API с данными курса.
     :raises AssertionError: Если хотя бы одно поле не совпадает.
     """
     assert_equal(response.course.title, request.title, "title")
@@ -75,6 +75,13 @@ def assert_create_course_response(
     assert_equal(response.course.min_score, request.min_score, "min_score")
     assert_equal(response.course.description, request.description, "description")
     assert_equal(response.course.estimated_time, request.estimated_time, "estimated_time")
-    assert_equal(response.course.created_by_user, request.created_by_user_id, "created_by_user_id")
-    assert_equal(response.course.preview_file, request.preview_file_id, "preview_file_id")
-
+    assert_equal(
+        response.course.preview_file.id,
+        request.preview_file_id,
+        "preview_file_id"
+    )
+    assert_equal(
+        response.course.created_by_user.id,
+        request.created_by_user_id,
+        "created_by_user_id"
+    )
